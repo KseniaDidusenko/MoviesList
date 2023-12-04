@@ -10,11 +10,12 @@ import Foundation
 enum Constants {
     
     enum Images {
-       static let starImage = "star.fill"
+        static let starImage = "star.fill"
+        static let close = "xmark"
     }
     
     enum Colors {
-      static let cellBackgroundColor = "cellBackgroundColor"
+        static let cellBackgroundColor = "cellBackgroundColor"
     }
     
     enum Titles {

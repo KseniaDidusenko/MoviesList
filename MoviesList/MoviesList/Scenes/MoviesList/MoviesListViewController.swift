@@ -9,6 +9,8 @@ import UIKit
 
 class MoviesListViewController: UIViewController {
     
+    // MARK: - Properties
+    
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(
@@ -23,15 +25,22 @@ class MoviesListViewController: UIViewController {
     
     var presenter: MoviesListPresenterProtocol?
     
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
-        configureNavigation()
+        setup()
+    }
+    
+    // MARK: - Private methods
+    
+    private func setup() {
+        setupNavigationController()
         setupTableView()
         setupLayout()
     }
     
-    private func configureNavigation() {
+    private func setupNavigationController() {
         navigationController?.isNavigationBarHidden = false
         title = Constants.Titles.topRated
     }
@@ -53,6 +62,8 @@ class MoviesListViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension MoviesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -60,6 +71,8 @@ extension MoviesListViewController: UITableViewDelegate {
         presenter?.didSelectRow(at: indexPath)
     }
 }
+
+// MARK: - UITableViewDataSource
 
 extension MoviesListViewController: UITableViewDataSource{
     
@@ -73,12 +86,12 @@ extension MoviesListViewController: UITableViewDataSource{
             for: indexPath
         ) as? MovieCell
         else { return UITableViewCell() }
-
+        
         let movie = presenter?.getMovie(at: indexPath)
-
+        
         cell.selectionStyle = .gray
         cell.setup(with: movie!)
-
+        
         return cell
     }
 }

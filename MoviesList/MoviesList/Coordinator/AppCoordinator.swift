@@ -8,20 +8,31 @@
 import UIKit
 
 class AppCoordinator: Coordinator {
-  
-  let window: UIWindow
-  let rootViewController: UINavigationController
-  let moviesListCoordinator: MoviesListCoordinator
-  
-  init(window: UIWindow) {
-    self.window = window
-    rootViewController = UINavigationController()
-    moviesListCoordinator = MoviesListCoordinator(navigationController: rootViewController)
-  }
-  
-  func start() {
-    window.rootViewController = rootViewController
-    moviesListCoordinator.start()
-    window.makeKeyAndVisible()
-  }
+    
+    // MARK: - Properties
+    
+    let window: UIWindow
+    let rootViewController: UINavigationController
+    let moviesListCoordinator: MoviesListCoordinator
+    
+    var parentCoordinator: Coordinator?
+    var childCoordinators: [Coordinator] = []
+    
+    // MARK: - Initialization
+    
+    init(window: UIWindow) {
+        self.window = window
+        rootViewController = UINavigationController()
+        moviesListCoordinator = MoviesListCoordinator(navigationController: rootViewController)
+    }
+    
+    // MARK: - Public methods
+    
+    func start() {
+        window.rootViewController = rootViewController
+        moviesListCoordinator.parentCoordinator = self
+        childCoordinators.append(moviesListCoordinator)
+        moviesListCoordinator.start()
+        window.makeKeyAndVisible()
+    }
 }

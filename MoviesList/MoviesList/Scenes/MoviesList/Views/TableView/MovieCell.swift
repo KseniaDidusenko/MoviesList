@@ -54,24 +54,26 @@ class MovieCell: UITableViewCell {
         imageView.tintColor = .black
         return imageView
     }()
-
+    
     private let voteAverageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 22)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
         return label
     }()
     
     // MARK: Initializaton
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureViews()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - Private methods
     
     private func configureViews() {
         contentView.addSubview(shadowView)
@@ -108,18 +110,20 @@ class MovieCell: UITableViewCell {
             movieCoverImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding),
             movieCoverImage.widthAnchor.constraint(equalToConstant: imageWidth),
             heightAnchor,
-
+            
             titleLabel.topAnchor.constraint(equalTo: movieCoverImage.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: movieCoverImage.trailingAnchor, constant: padding),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-
+            
             starView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: padding),
             starView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-
+            
             voteAverageLabel.leadingAnchor.constraint(equalTo: starView.trailingAnchor, constant: padding),
             voteAverageLabel.centerYAnchor.constraint(equalTo: starView.centerYAnchor)
         ])
     }
+    
+    // MARK: - Public methods
     
     func setup(with model: Movie) {
         if let url = URL(string: model.posterPath ?? "") {
