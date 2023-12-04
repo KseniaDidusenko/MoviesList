@@ -24,6 +24,9 @@
 		5E0B25C12B1E1F2E00BD7806 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0B25C02B1E1F2E00BD7806 /* Movie.swift */; };
 		5E0B25C42B1E1FAC00BD7806 /* CustomCacheImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0B25C32B1E1FAC00BD7806 /* CustomCacheImageView.swift */; };
 		5E0B25C62B1E30B400BD7806 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0B25C52B1E30B400BD7806 /* Constants.swift */; };
+		5E0B25C92B1E518600BD7806 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0B25C82B1E518600BD7806 /* MovieDetailsViewController.swift */; };
+		5E0B25CB2B1E519700BD7806 /* MovieDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0B25CA2B1E519700BD7806 /* MovieDetailsPresenter.swift */; };
+		5E0B25CD2B1E520900BD7806 /* MovieDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0B25CC2B1E520900BD7806 /* MovieDetailsCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +68,9 @@
 		5E0B25C02B1E1F2E00BD7806 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		5E0B25C32B1E1FAC00BD7806 /* CustomCacheImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCacheImageView.swift; sourceTree = "<group>"; };
 		5E0B25C52B1E30B400BD7806 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5E0B25C82B1E518600BD7806 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
+		5E0B25CA2B1E519700BD7806 /* MovieDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsPresenter.swift; sourceTree = "<group>"; };
+		5E0B25CC2B1E520900BD7806 /* MovieDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +154,7 @@
 		5E0B25AD2B1E1BBE00BD7806 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5E0B25C72B1E513700BD7806 /* MovieDetails */,
 				5E0B25B72B1E1E7C00BD7806 /* MoviesList */,
 			);
 			path = Scenes;
@@ -168,6 +175,7 @@
 				5E0B25B12B1E1D9800BD7806 /* Coordinator.swift */,
 				5E0B25B32B1E1DA700BD7806 /* AppCoordinator.swift */,
 				5E0B25B52B1E1E4E00BD7806 /* MoviesListCoordinator.swift */,
+				5E0B25CC2B1E520900BD7806 /* MovieDetailsCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -213,6 +221,15 @@
 				5E0B25C52B1E30B400BD7806 /* Constants.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		5E0B25C72B1E513700BD7806 /* MovieDetails */ = {
+			isa = PBXGroup;
+			children = (
+				5E0B25CA2B1E519700BD7806 /* MovieDetailsPresenter.swift */,
+				5E0B25C82B1E518600BD7806 /* MovieDetailsViewController.swift */,
+			);
+			path = MovieDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,14 +363,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E0B25CD2B1E520900BD7806 /* MovieDetailsCoordinator.swift in Sources */,
 				5E0B25B42B1E1DA700BD7806 /* AppCoordinator.swift in Sources */,
 				5E0B25C62B1E30B400BD7806 /* Constants.swift in Sources */,
 				5E0B25242B1A2F8C00BD7806 /* AppDelegate.swift in Sources */,
 				5E0B25C12B1E1F2E00BD7806 /* Movie.swift in Sources */,
 				5E0B25BF2B1E1ECD00BD7806 /* MovieCell.swift in Sources */,
 				5E0B25262B1A2F8C00BD7806 /* SceneDelegate.swift in Sources */,
+				5E0B25CB2B1E519700BD7806 /* MovieDetailsPresenter.swift in Sources */,
 				5E0B25BB2B1E1EAC00BD7806 /* MoviesListPresenter.swift in Sources */,
 				5E0B25B62B1E1E4F00BD7806 /* MoviesListCoordinator.swift in Sources */,
+				5E0B25C92B1E518600BD7806 /* MovieDetailsViewController.swift in Sources */,
 				5E0B25B22B1E1D9800BD7806 /* Coordinator.swift in Sources */,
 				5E0B25C42B1E1FAC00BD7806 /* CustomCacheImageView.swift in Sources */,
 				5E0B25B92B1E1E9500BD7806 /* MoviesListViewController.swift in Sources */,
@@ -539,8 +559,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -567,8 +586,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
