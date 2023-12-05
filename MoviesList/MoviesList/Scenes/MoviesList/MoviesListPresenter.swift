@@ -18,6 +18,7 @@ protocol MoviesListPresenterProtocol: AnyObject {
     func getMovie(at indexPath: IndexPath) -> Movie
     func numberOfRows() -> Int
     func getMovies()
+    func userRequestedMoreData()
 }
 
 class MoviesListPresenter: MoviesListPresenterProtocol {
@@ -65,7 +66,10 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
             case .failure(let error):
                 break
             }
-                
-            }
+        }
+    }
+    
+    func userRequestedMoreData() {
+        getMovies()
     }
 }

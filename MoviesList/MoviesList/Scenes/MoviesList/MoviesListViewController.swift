@@ -97,6 +97,14 @@ extension MoviesListViewController: UITableViewDataSource{
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastSection = tableView.numberOfSections - 1
+        let lastRow = tableView.numberOfRows(inSection: lastSection) - 1
+        if indexPath.section == lastSection && indexPath.row == lastRow {
+            presenter?.userRequestedMoreData()
+        }
+    }
 }
 
 // MARK: - UI Update
