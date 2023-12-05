@@ -11,16 +11,44 @@ class MoviesListViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let searchController = UISearchController(searchResultsController: nil)
+    private let refreshControl = UIRefreshControl()
+    
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(
             MovieCell.self,
             forCellReuseIdentifier: String(describing: MovieCell.self)
         )
+        
+        
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
+    }()
+    
+    private let emptyView: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let emptyImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "sparkle.magnifyingglass")
+        imageView.tintColor = .lightGray
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.text = "No results"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     var presenter: MoviesListPresenterProtocol?
@@ -39,6 +67,7 @@ class MoviesListViewController: UIViewController {
     private func setup() {
         setupNavigationController()
         setupTableView()
+        setupSearchController()
         setupLayout()
     }
     
@@ -48,26 +77,61 @@ class MoviesListViewController: UIViewController {
     }
     
     private func setupTableView() {
+        refreshControl.addTarget(
+            self,
+            action: #selector(handleRefreshControl),
+            for: .valueChanged
+        )
+        tableView.refreshControl = self.refreshControl
         tableView.delegate = self
         tableView.dataSource = self
     }
     
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Search movie"
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.hidesSearchBarWhenScrolling = true
+        definesPresentationContext = true
+        navigationItem.searchController = searchController
+    }
+    
     private func setupLayout() {
         view.addSubview(tableView)
+        view.addSubview(emptyView)
+        emptyView.addSubview(emptyImageView)
+        emptyView.addSubview(emptyLabel)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            emptyView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor),
+            
+            emptyImageView.widthAnchor.constraint(equalToConstant: 200),
+            emptyImageView.heightAnchor.constraint(equalToConstant: 200),
+            emptyImageView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+            emptyImageView.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor),
+            
+            emptyLabel.centerXAnchor.constraint(equalTo: emptyImageView.centerXAnchor),
+            emptyLabel.topAnchor.constraint(equalTo: emptyImageView.bottomAnchor, constant: 12.0)
         ])
+    }
+    
+    @objc private func handleRefreshControl() {
+        if !searchController.isActive {
+            presenter?.handleRefreshControl()
+        }
     }
 }
 
 // MARK: - UITableViewDelegate
 
 extension MoviesListViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         presenter?.didSelectRow(at: indexPath)
@@ -97,22 +161,40 @@ extension MoviesListViewController: UITableViewDataSource{
         
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let lastSection = tableView.numberOfSections - 1
-        let lastRow = tableView.numberOfRows(inSection: lastSection) - 1
-        if indexPath.section == lastSection && indexPath.row == lastRow {
-            presenter?.userRequestedMoreData()
-        }
-    }
 }
 
 // MARK: - UI Update
 
 extension MoviesListViewController: MoviesListViewProtocol {
-    func updateMovies(_ movies: [Movie]) {
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+        }))
         DispatchQueue.main.async { [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func showEmptyView(isHidden: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.emptyView.isHidden = isHidden
             self?.tableView.reloadData()
         }
+    }
+    
+    func updateMovies() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+            self?.refreshControl.endRefreshing()
+        }
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension MoviesListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let inputTextByUser = searchController.searchBar.text else { return }
+        presenter?.searchMovies(with: inputTextByUser)
     }
 }

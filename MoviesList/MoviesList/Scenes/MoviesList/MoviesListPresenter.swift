@@ -8,17 +8,22 @@
 import Foundation
 
 protocol MoviesListViewProtocol: AnyObject {
-    func updateMovies(_ movies: [Movie])
+    func updateMovies()
+    func showEmptyView(isHidden: Bool)
+    func showAlert(title: String, message: String)
 }
 
 protocol MoviesListPresenterProtocol: AnyObject {
     var view: MoviesListViewProtocol? { get set }
-    var moviesList: [Movie] { get set }
+//    var moviesList: [Movie] { get set }
     func didSelectRow(at indexPath: IndexPath)
     func getMovie(at indexPath: IndexPath) -> Movie
     func numberOfRows() -> Int
+    
     func getMovies()
-    func userRequestedMoreData()
+    func searchMovies(with query: String)
+    
+    func handleRefreshControl()
 }
 
 class MoviesListPresenter: MoviesListPresenterProtocol {
@@ -27,10 +32,14 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
     
     weak var coordinator: MoviesListCoordinatorProtocol?
     weak var view: MoviesListViewProtocol?
+    
     private var moviesService: MoviesServiceProtocol
+    
     private var currentPage: Int = 1
     
+    var dataSource: [Movie] = []
     var moviesList: [Movie] = []
+    var searchMoviesList: [Movie] = []
     
     // MARK: - Initialization
     
@@ -48,11 +57,16 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
     }
     
     func getMovie(at indexPath: IndexPath) -> Movie {
-        return moviesList[indexPath.row]
+        return dataSource[indexPath.row]
     }
     
     func numberOfRows() -> Int {
-        return moviesList.count
+        return dataSource.count
+    }
+    
+    func handleRefreshControl() {
+        self.currentPage = 1
+        getMovies()
     }
     
     func getMovies() {
@@ -60,16 +74,50 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
             switch result {
             case .success(let movies):
                 guard let self = self else { return }
+                self.view?.showEmptyView(isHidden: true)
                 self.moviesList.append(contentsOf: movies.results)
-                self.currentPage = movies.page + 1
-                self.view?.updateMovies(self.moviesList)
+                self.dataSource = self.moviesList
+                self.view?.updateMovies()
             case .failure(let error):
-                break
+                self?.view?.showEmptyView(isHidden: false)
+                self?.view?.updateMovies()
+                self?.view?.showAlert(title: "Error", message: error.textMessage)
             }
         }
     }
-    
-    func userRequestedMoreData() {
-        getMovies()
+
+    func searchMovies(with query: String) {
+        
+        let characterCount = query.count
+        
+        switch characterCount {
+        case 0:
+            self.dataSource = moviesList
+            if self.dataSource.isEmpty {
+                self.view?.showEmptyView(isHidden: false)
+            } else {
+                self.view?.showEmptyView(isHidden: true)}
+            self.view?.updateMovies()
+        default:
+            moviesService.searchMovie(query: query) { [weak self] result in
+                switch result {
+                case .success(let movies):
+                    guard let self = self else { return }
+                    self.searchMoviesList = movies.results
+                    let noResults = movies.results.isEmpty
+                    if noResults {
+                        self.view?.showEmptyView(isHidden: false)
+                        self.dataSource = []
+                        self.view?.updateMovies()
+                    } else {
+                        self.view?.showEmptyView(isHidden: true)
+                        self.dataSource = self.searchMoviesList
+                        self.view?.updateMovies()
+                    }
+                case .failure(_):
+                    self?.view?.showEmptyView(isHidden: false)
+                }
+            }
+        }
     }
 }

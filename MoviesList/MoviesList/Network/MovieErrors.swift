@@ -30,7 +30,7 @@ enum MovieErrors: Error {
         case .badUrl:
             return "The URL doesn't exist"
         case .noData:
-            return "No data to parse"
+            return "No data"
         case .parsingError:
             return "Couldn't parse data"
         case .unknownError:

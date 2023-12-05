@@ -67,6 +67,14 @@ class MovieDetailsViewController: UIViewController {
         return label
     }()
     
+    private let charOccurrenceLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 18)
+        return label
+    }()
+    
     var presenter: MovieDetailsPresenterProtocol?
     
     // MARK: - Lifecycle
@@ -95,6 +103,7 @@ class MovieDetailsViewController: UIViewController {
         scrollView.addSubview(overviewLabel)
         scrollView.addSubview(starView)
         scrollView.addSubview(voteAverageLabel)
+        scrollView.addSubview(charOccurrenceLabel)
     }
     
     private func setupCloseButton() {
@@ -142,10 +151,15 @@ class MovieDetailsViewController: UIViewController {
             
             starView.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: padding),
             starView.leadingAnchor.constraint(equalTo: overviewLabel.leadingAnchor),
-            starView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -padding),
+            //starView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -padding),
             
             voteAverageLabel.leadingAnchor.constraint(equalTo: starView.trailingAnchor, constant: padding),
-            voteAverageLabel.centerYAnchor.constraint(equalTo: starView.centerYAnchor)
+            voteAverageLabel.centerYAnchor.constraint(equalTo: starView.centerYAnchor),
+            
+            charOccurrenceLabel.topAnchor.constraint(equalTo: starView.bottomAnchor, constant: padding),
+            charOccurrenceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            charOccurrenceLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            charOccurrenceLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -padding)
         ])
     }
 }
@@ -161,5 +175,19 @@ extension MovieDetailsViewController: MovieDetailsViewProtocol {
         titleLabel.text = movie.title
         overviewLabel.text = movie.overview
         voteAverageLabel.text = String(movie.voteAverage)
+        let occurrenceText = characterOccurrence(in: movie.title)
+        charOccurrenceLabel.text = "Occurrence oh characters: \(occurrenceText)"
+    }
+    
+    func characterOccurrence(in string: String) -> [Character : Int] {
+        var charOccurrenceDictionary: [Character : Int] = [:]
+        for char in string {
+            if let value = charOccurrenceDictionary[char] {
+                charOccurrenceDictionary[char] = value + 1
+            } else {
+                charOccurrenceDictionary[char] = 1
+            }
+        }
+        return charOccurrenceDictionary
     }
 }

@@ -15,9 +15,9 @@ class MovieCell: UITableViewCell {
         let shadowView = UIView()
         shadowView.backgroundColor = .white
         shadowView.layer.shadowColor = UIColor.black.cgColor
-        shadowView.layer.shadowOpacity = 0.4
+        shadowView.layer.shadowOpacity = 0.3
         shadowView.layer.shadowOffset = .zero
-        shadowView.layer.shadowRadius = 10
+        shadowView.layer.shadowRadius = 5
         shadowView.layer.cornerRadius = 20.0
         shadowView.translatesAutoresizingMaskIntoConstraints = false
         return shadowView
@@ -44,7 +44,7 @@ class MovieCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 28)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         return label
     }()
     
