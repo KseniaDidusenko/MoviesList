@@ -33,6 +33,7 @@ class MoviesListCoordinator: Coordinator {
         let presenter = MoviesListPresenter()
         
         presenter.coordinator = self
+        presenter.view = movieListVC
         movieListVC.presenter = presenter
         
         navigationController.navigationBar.prefersLargeTitles = true

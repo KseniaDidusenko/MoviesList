@@ -30,6 +30,8 @@ class MoviesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        
+        presenter?.getMovies()
     }
     
     // MARK: - Private methods
@@ -94,5 +96,15 @@ extension MoviesListViewController: UITableViewDataSource{
         cell.selectionStyle = .gray
         
         return cell
+    }
+}
+
+// MARK: - UI Update
+
+extension MoviesListViewController: MoviesListViewProtocol {
+    func updateMovies(_ movies: [Movie]) {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
 }

@@ -34,7 +34,8 @@ class MovieCell: UITableViewCell {
     private let movieCoverImage: CustomCacheImageView = {
         let imageView = CustomCacheImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .lightGray
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 10
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -126,7 +127,8 @@ class MovieCell: UITableViewCell {
     // MARK: - Public methods
     
     func setup(with model: Movie) {
-        if let url = URL(string: model.posterPath ?? "") {
+        if let posterPath = model.posterPath,
+           let url = URL(string: ApiURLs.imageURL + posterPath) {
             movieCoverImage.loadImageWithUrl(url)
         }
         titleLabel.text = model.title

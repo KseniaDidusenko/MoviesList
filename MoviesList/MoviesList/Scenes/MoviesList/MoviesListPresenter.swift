@@ -8,6 +8,7 @@
 import Foundation
 
 protocol MoviesListViewProtocol: AnyObject {
+    func updateMovies(_ movies: [Movie])
 }
 
 protocol MoviesListPresenterProtocol: AnyObject {
@@ -16,7 +17,7 @@ protocol MoviesListPresenterProtocol: AnyObject {
     func didSelectRow(at indexPath: IndexPath)
     func getMovie(at indexPath: IndexPath) -> Movie
     func numberOfRows() -> Int
-    
+    func getMovies()
 }
 
 class MoviesListPresenter: MoviesListPresenterProtocol {
@@ -25,10 +26,18 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
     
     weak var coordinator: MoviesListCoordinatorProtocol?
     weak var view: MoviesListViewProtocol?
+    private var moviesService: MoviesServiceProtocol
+    private var currentPage: Int = 1
     
-    var moviesList: [Movie] = [Movie(id: 1, title: "first", overview: "sdddddd", voteAverage: 9, backdropPath: "", posterPath: "")]
+    var moviesList: [Movie] = []
     
     // MARK: - Initialization
+    
+    init(
+        moviesService: MoviesServiceProtocol = MoviesService()
+    ) {
+        self.moviesService = moviesService
+    }
     
     // MARK: - Public methods
     
@@ -43,5 +52,20 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
     
     func numberOfRows() -> Int {
         return moviesList.count
+    }
+    
+    func getMovies() {
+        moviesService.getMovies(page: currentPage) { [weak self] result in
+            switch result {
+            case .success(let movies):
+                guard let self = self else { return }
+                self.moviesList.append(contentsOf: movies.results)
+                self.currentPage = movies.page + 1
+                self.view?.updateMovies(self.moviesList)
+            case .failure(let error):
+                break
+            }
+                
+            }
     }
 }

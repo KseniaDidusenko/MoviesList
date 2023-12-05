@@ -21,4 +21,8 @@ enum Constants {
     enum Titles {
         static let topRated = "Top rated"
     }
+    
+//    enum ImagesURL {
+//        static let 
+//    }
 }

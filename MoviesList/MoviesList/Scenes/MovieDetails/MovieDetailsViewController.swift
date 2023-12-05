@@ -22,7 +22,7 @@ class MovieDetailsViewController: UIViewController {
         let imageView = CustomCacheImageView()
         imageView.backgroundColor = .lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -154,7 +154,8 @@ class MovieDetailsViewController: UIViewController {
 
 extension MovieDetailsViewController: MovieDetailsViewProtocol {
     func updateDetails(_ movie: Movie) {
-        if let url = URL(string: movie.posterPath ?? "") {
+        if let backdropPath = movie.backdropPath,
+           let url = URL(string: ApiURLs.imageURL + backdropPath) {
             posterImageView.loadImageWithUrl(url)
         }
         titleLabel.text = movie.title
