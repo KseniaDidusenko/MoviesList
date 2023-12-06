@@ -10,7 +10,6 @@ import XCTest
 
 final class MoviesListSceneTest: XCTestCase {
 
-//    var viewController: MoviesListViewController!
     var moviesServiceMock: MoviesServiceMock!
     var presenter: MoviesListPresenter!
     var moviesListViewMock: MoviesListViewMock!
