@@ -151,7 +151,6 @@ class MovieDetailsViewController: UIViewController {
             
             starView.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: padding),
             starView.leadingAnchor.constraint(equalTo: overviewLabel.leadingAnchor),
-            //starView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -padding),
             
             voteAverageLabel.leadingAnchor.constraint(equalTo: starView.trailingAnchor, constant: padding),
             voteAverageLabel.centerYAnchor.constraint(equalTo: starView.centerYAnchor),
@@ -176,7 +175,7 @@ extension MovieDetailsViewController: MovieDetailsViewProtocol {
         overviewLabel.text = movie.overview
         voteAverageLabel.text = String(movie.voteAverage)
         let occurrenceText = characterOccurrence(in: movie.title)
-        charOccurrenceLabel.text = "Occurrence oh characters: \(occurrenceText)"
+        charOccurrenceLabel.text = "Occurrence of characters: \(occurrenceText)"
     }
     
     func characterOccurrence(in string: String) -> [Character : Int] {

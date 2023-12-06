@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MoviesListViewProtocol: AnyObject {
+public protocol MoviesListViewProtocol: AnyObject {
     func updateMovies()
     func showEmptyView(isHidden: Bool)
     func showAlert(title: String, message: String)
@@ -15,7 +15,6 @@ protocol MoviesListViewProtocol: AnyObject {
 
 protocol MoviesListPresenterProtocol: AnyObject {
     var view: MoviesListViewProtocol? { get set }
-//    var moviesList: [Movie] { get set }
     func didSelectRow(at indexPath: IndexPath)
     func getMovie(at indexPath: IndexPath) -> Movie
     func numberOfRows() -> Int
@@ -44,7 +43,7 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
     // MARK: - Initialization
     
     init(
-        moviesService: MoviesServiceProtocol = MoviesService()
+        moviesService: MoviesServiceProtocol
     ) {
         self.moviesService = moviesService
     }
@@ -65,7 +64,6 @@ class MoviesListPresenter: MoviesListPresenterProtocol {
     }
     
     func handleRefreshControl() {
-        self.currentPage = 1
         getMovies()
     }
     

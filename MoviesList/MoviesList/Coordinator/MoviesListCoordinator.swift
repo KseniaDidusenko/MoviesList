@@ -30,7 +30,7 @@ class MoviesListCoordinator: Coordinator {
     
     func start() {
         let movieListVC = MoviesListViewController()
-        let presenter = MoviesListPresenter()
+        let presenter = MoviesListPresenter(moviesService: MoviesService())
         
         presenter.coordinator = self
         presenter.view = movieListVC

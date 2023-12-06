@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MovieDetailsViewProtocol: AnyObject {
+public protocol MovieDetailsViewProtocol: AnyObject {
     func updateDetails(_ movie: Movie)
 }
 

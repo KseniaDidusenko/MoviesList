@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MoviesServiceProtocol {
+public protocol MoviesServiceProtocol {
     func getMovies(page: Int, completion: @escaping (Result<MoviesResponse, MovieErrors>) -> Void)
     func searchMovie(query: String, completion: @escaping (Result<MoviesResponse, MovieErrors>) -> Void)
 }

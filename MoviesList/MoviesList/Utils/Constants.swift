@@ -12,6 +12,7 @@ enum Constants {
     enum Images {
         static let starImage = "star.fill"
         static let close = "xmark"
+        static let empty = "sparkle.magnifyingglass"
     }
     
     enum Colors {
@@ -20,9 +21,8 @@ enum Constants {
     
     enum Titles {
         static let topRated = "Top rated"
+        static let noResults = "No results"
+        static let searchMovie = "Search movie"
+        static let ok = "Ok"
     }
-    
-//    enum ImagesURL {
-//        static let 
-//    }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MovieErrors: Error {
+public enum MovieErrors: Error {
     case badRequest
     case unauthorizedError
     case notFoundError

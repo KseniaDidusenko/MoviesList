@@ -20,8 +20,7 @@ class MoviesListViewController: UIViewController {
             MovieCell.self,
             forCellReuseIdentifier: String(describing: MovieCell.self)
         )
-        
-        
+        tableView.keyboardDismissMode = .onDrag
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +36,7 @@ class MoviesListViewController: UIViewController {
     
     private let emptyImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "sparkle.magnifyingglass")
+        imageView.image = UIImage(systemName: Constants.Images.empty)
         imageView.tintColor = .lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -46,7 +45,7 @@ class MoviesListViewController: UIViewController {
     private let emptyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
-        label.text = "No results"
+        label.text = Constants.Titles.noResults
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -89,7 +88,7 @@ class MoviesListViewController: UIViewController {
     
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = "Search movie"
+        searchController.searchBar.placeholder = Constants.Titles.searchMovie
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.hidesSearchBarWhenScrolling = true
         definesPresentationContext = true
@@ -168,7 +167,7 @@ extension MoviesListViewController: UITableViewDataSource{
 extension MoviesListViewController: MoviesListViewProtocol {
     func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: Constants.Titles.ok, style: .default, handler: { (action) in
         }))
         DispatchQueue.main.async { [weak self] in
             self?.present(alertController, animated: true, completion: nil)

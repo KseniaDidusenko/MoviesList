@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Movie: Decodable {
-    let id: Int
-    let title: String
-    let overview: String
-    let voteAverage: Double
-    let backdropPath: String?
-    let posterPath: String?
+public struct Movie: Decodable {
+    public let id: Int
+    public let title: String
+    public let overview: String
+    public let voteAverage: Double
+    public let backdropPath: String?
+    public let posterPath: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -26,7 +26,7 @@ struct Movie: Decodable {
 }
 
 extension Movie: Equatable {
-    static func == (lhs: Movie, rhs: Movie) -> Bool {
+    public static func == (lhs: Movie, rhs: Movie) -> Bool {
         return true
     }
 }
